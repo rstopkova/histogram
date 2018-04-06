@@ -1,0 +1,26 @@
+/* Toto je testovaci soubor pro Mealyho automat odstranujici poznamky */
+
+#include <stdio.h>
+
+/*! 
+ * \brief Doxygenova poznamka
+ */
+int main( int argc, char **argv )
+{
+	// jendoradkova poznamka
+	
+	const char* text = "Toto je /* poznamka */ uvnitr 'textu'";
+	const char* text2 = "Toto je // poznamka uvnitr textu"; // poznamka za textem
+	const char* text3 = "Toto je \" uvnitr textu s lichym poctem ' "; /* viceradkova poznamka
+	za textem */
+	
+	char zn = '//';
+	char zn2 = '"';
+	char zn3 = '\''; // poznamka za znakem
+	char zn4 = '\\'; /* viceradkova poznamka
+	za znakem */
+	
+	double val = 10 / 2;
+	
+	return 0;
+}
