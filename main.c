@@ -5,20 +5,27 @@
 #include <conio.h>
 #include <stdbool.h>
 
-typedef enum{MOSTFREQUENT, LEASTFREQUENT, SUM, AVERAGE, PRINTALL, ENDPROGRAM}Function_t;
+typedef enum{MOSTFREQUENT, LEASTFREQUENT, SUM, AVERAGE, PRINTALL, NEWINPUT, ENDPROGRAM}Function_t;
 
 void printMenu(){
     printf("**************************************************\n");
     printf("Pokracuj stisknutim klavesy:\n");
     printf("Stlac 1) pre informacie o najcastejsom abecednom znaku\n");
-    printf("Stlac 2) pre informacie o najmenej castom abecednom znaku\n");
+    printf("Stlac 2) pre informacie o najmenej castych abecednych znakoch\n");
     printf("Stlac 3) pre vypis, kolko je celkovo abecednych znakov\n");
     printf("Stlac 4) pre informaciu o priemernej pocetnosti abecednych znakov\n");
     printf("Stlac 5) pre vypis pocetnosti kazdeho abecedneho znaku\n");
+    printf("Stlac SPACEBAR) pre zadanie novych dat z konzole\n");
     printf("Stlac ENTER) pre ukoncenie programu\n");
     printf("**************************************************\n");
 }
 
+/*!
+ * \brief Načíta vstup z input streamu a rozparsuje ho do pripraveného poľa
+ * \param array[] Pole kam má byť vstup po spracovaní uložený
+ * \param length dĺžka poľa, konštantná hodnota (256)
+ * \param inputfile input stream (závisí na parametroch príkazovej riadky, s ktorými bol program spustený)
+ */
 void parseInput(int array[], int length, FILE* inputfile){
 
     for(int i = 0; i < length; i++){
@@ -31,17 +38,12 @@ void parseInput(int array[], int length, FILE* inputfile){
         printf("Zadaj Sekvenciu znakov: \n");
     }
 
-    while (1){
+    do{
         read = fgetc(inputfile);
-        if(read == EOF || read == '#'){
-            break;
+        if(isalpha(read)){
+            array[(int)read] += 1;
         }
-        else{
-            if(isalpha(read)){
-                array[(int)read] += 1;
-            }
-        }
-    }
+    }while(read != EOF && read != '#');
 }
 
 
@@ -67,34 +69,48 @@ float averageCount(int array[], int length){
     return sum / countalpha;
 }
 
-int mostFrequent(int array[], int length){
+void mostFrequent(int array[], int length){
     int maxnum = INT_MIN;
-    int maxindex = 0;
 
     for(int i = 0; i < length; i++){
         if(isalpha(i)){
             if(array[i] > maxnum){
                 maxnum = array[i];
-                maxindex = i;
             }
         }
     }
-    return maxindex;
+    printf("Najvyssi pocet vyskytov nejakeho znaku: %d\n", maxnum);
+    printf("Tento pocet vyskytov maju znaky:\n");
+
+    for(int j = 0; j < length; j++){
+        if(isalpha(j)){
+            if(array[j] == maxnum){
+                printf("%c ", (char)j);
+            }
+        }
+    }
 }
 
-int leastFrequent(int array[], int length){
+void leastFrequent(int array[], int length){
     int minnum = INT_MAX;
-    int minindex = 0;
 
     for(int i = 0; i < length; i++){
         if(isalpha(i)){
             if(array[i] < minnum){
                 minnum = array[i];
-                minindex = i;
             }
         }
     }
-    return minindex;
+    printf("Najnizsi pocet vyskytov nejakeho znaku: %d\n", minnum);
+    printf("Tento pocet vyskytov maju znaky:\n");
+
+    for(int j = 0; j < length; j++){
+        if(isalpha(j)){
+            if(array[j] == minnum){
+                printf("%c ", (char)j);
+            }
+        }
+    }
 }
 
 int charTotal(int array[], int length){
@@ -129,6 +145,9 @@ Function_t functionChoice(){
         else if(znak == '5'){
             return PRINTALL;
         }
+        else if(znak == 32){
+            return NEWINPUT;
+        }
         else if(znak == 13){
             return ENDPROGRAM;
         }
@@ -144,7 +163,7 @@ int main(int argc, char** argv)
     Function_t function;
     int array[256];
     const int length = 256;
-    int sum, most, least;
+    int sum;
     float average;
 
     FILE *input = stdin;
@@ -163,13 +182,13 @@ int main(int argc, char** argv)
         function = functionChoice();
         switch(function){
             case MOSTFREQUENT:
-            most = mostFrequent(array, length);
-            printf("Najcastejsi znak je znak \'%c\' s poctom vyskytov %d\n", most, array[most]);
+            mostFrequent(array, length);
+            printf("\n");
             break;
 
             case LEASTFREQUENT:
-            least = leastFrequent(array, length);
-            printf("Najmenej casty znak je znak \'%c\' s poctom vyskytov %d\n", least, array[least]);
+            leastFrequent(array, length);
+            printf("\n");
             break;
 
             case SUM:
@@ -179,6 +198,14 @@ int main(int argc, char** argv)
             case AVERAGE:
             average = averageCount(array, length);
             printf("Priemerny pocet vyskytov znaku je %.3f\n", average);
+            break;
+
+            case NEWINPUT:
+            if(input != stdin){
+                input = stdin;
+            }
+            parseInput(array, length, input);
+            sum = charTotal(array, length);
             break;
 
             case PRINTALL:
