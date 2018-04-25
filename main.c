@@ -46,7 +46,11 @@ void parseInput(int array[], int length, FILE* inputfile){
     }while(read != EOF && read != '#');
 }
 
-
+/*!
+ * \brief Načíta vstup z input streamu a rozparsuje ho do pripraveného poľa
+ * \param array[] Pole kam má byť vstup po spracovaní uložený
+ * \param length dĺžka poľa, konštantná hodnota (256)
+ */
 void printArray(int array[], int length){
     for(int i = 0; i < length; i++){
         if(isalpha(i)){
@@ -55,7 +59,12 @@ void printArray(int array[], int length){
     }
 }
 
-
+/*!
+ * \brief Vypočíta priemerný počet znakov z textu
+ * \param array[] Pole kam má byť počet po spracovaní uložený
+ * \param length dĺžka poľa, konštantná hodnota (256)
+ * \return float average - priemerný počet výskytov abecedného znaku
+ */
 float averageCount(int array[], int length){
     float sum = 0;
     int countalpha = 0;
@@ -68,7 +77,11 @@ float averageCount(int array[], int length){
     }
     return sum / countalpha;
 }
-
+/*!
+ * \brief Vyhľadá znak s najvačším počtom výskytov
+ * \param array[] Pole kam má byť počet po spracovaní uložený
+ * \param length dĺžka poľa, konštantná hodnota (256)
+ */
 void mostFrequent(int array[], int length){
     int maxnum = INT_MIN;
 
@@ -90,7 +103,11 @@ void mostFrequent(int array[], int length){
         }
     }
 }
-
+/*!
+ * \brief Vyhľadá znak s najmenším počtom
+ * \param array[] Pole kam má byť počet po spracovaní uložený
+ * \param length dĺžka poľa, konštantná hodnota (256)
+ */
 void leastFrequent(int array[], int length){
     int minnum = INT_MAX;
 
@@ -112,7 +129,11 @@ void leastFrequent(int array[], int length){
         }
     }
 }
-
+/*!
+ * \brief Spočíta celkový počet znakov použitých v textovom súbore
+ * \param array[] Pole kam má byť počet po spracovaní uložený
+ * \param length dĺžka poľa, konštantná hodnota (256)
+ */
 int charTotal(int array[], int length){
     int sum = 0;
     for(int i = 0; i < length; i++){
@@ -123,11 +144,17 @@ int charTotal(int array[], int length){
     return sum;
 }
 
+/*!
+ * \brief Vypíše menu a realizuje voľbu funkcie pomocou uživateľského vstupu z terminálu
+ * \return Vracia zvolenú funkciu (realizované uživateľom definovaným výčtovým typom Function_t, viď. vyššie)
+ */
+
 Function_t functionChoice(){
     printMenu();
     char znak;
 
     while(1){
+        printf("Vasa volba: ");
         znak = getche();
         printf("\n");
         if (znak == '1'){
