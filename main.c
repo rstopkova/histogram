@@ -104,7 +104,7 @@ void mostFrequent(int array[], int length){
     }
 }
 /*!
- * \brief Vyhľadá znak s najmenším počtom
+ * \brief Vyhľadá znak s najmenším počtom výskytov
  * \param array[] Pole kam má byť počet po spracovaní uložený
  * \param length dĺžka poľa, konštantná hodnota (256)
  */
@@ -133,6 +133,7 @@ void leastFrequent(int array[], int length){
  * \brief Spočíta celkový počet znakov použitých v textovom súbore
  * \param array[] Pole kam má byť počet po spracovaní uložený
  * \param length dĺžka poľa, konštantná hodnota (256)
+ * \return sum - celkový počet znakov vyskytujúcich sa v textovom súbore
  */
 int charTotal(int array[], int length){
     int sum = 0;
